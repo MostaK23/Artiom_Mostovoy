@@ -1,0 +1,70 @@
+using System;
+using System.Drawing;
+using System.Linq.Expressions;
+
+namespace DZCourse
+{
+    class Program
+    {
+        public static object Check(string str)
+        {
+            object answer = "";           
+            bool try_int,try_double;
+            int num_int;
+            double num_double;
+
+            
+            try_int = int.TryParse(str,out num_int);
+            try_double = double.TryParse(str, out num_double);
+
+
+            if (try_int == true)
+            { 
+                answer = "int"; 
+            }
+
+            else 
+            {
+                if (try_double == true)
+                {
+                    answer = "double";
+                }
+                else 
+                { 
+                    answer = "string"; 
+                }
+            }          
+            return answer;
+        }                          
+
+        static void Main(string[] args)
+        {
+            string str;
+            Console.WriteLine("Введите значение: ");
+            str = Console.ReadLine();
+
+            object answer = Check(str);
+
+            switch (answer)
+            {
+                case "int":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(str + " is int.");
+                    Console.ResetColor();
+                    break;
+
+                case "double":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(str + " is double.");
+                    Console.ResetColor();
+                    break;
+
+                case "string":
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(str + " is string.");
+                    Console.ResetColor();
+                    break;
+            }
+        }
+    }
+}
