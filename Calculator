@@ -1,0 +1,156 @@
+using System;
+using System.Numerics;
+using System.Text;
+namespace calculator
+{
+    class Program
+    {
+        static double Summ(double a,double b)
+        {
+            return a + b;
+        }
+
+        static double Diff(double a,double b)
+        {
+            return a - b;
+        }
+
+        static double Mult(double a, double b)
+        {
+            return a * b;
+        }
+
+        static double Div(double a,double b)
+        {
+            return a / b;
+        }
+
+        static double Degree(double a, double b)
+        {
+            return Math.Pow(a, b);
+        }
+
+        static void Main(string[] args)
+        {
+            double number1, number2;
+            bool try_number1, try_number2,repeat_session;
+            string num1, num2;
+
+            do 
+            { 
+                Console.WriteLine("Введите первое число:");
+                num1 = Console.ReadLine();
+                try_number1 = double.TryParse(num1, out number1);
+                while(try_number1 != true)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Введите число!");
+                    Console.ResetColor();
+                    num1 = Console.ReadLine();
+                    try_number1 = double.TryParse(num1, out number1);
+                }
+                number1 = double.Parse(num1);
+
+
+                Console.WriteLine("Введите второе число:");
+                num2 = Console.ReadLine();
+                try_number2 = double.TryParse(num2, out number2);
+                while (try_number2 != true)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Введите число!");
+                    Console.ResetColor();
+                    num2 = Console.ReadLine();
+                    try_number2 = double.TryParse(num2, out number2);
+                }
+                number2 = double.Parse(num2);
+
+
+                Console.WriteLine("\nВыберите операцию, которую хотите произвести.");
+                Console.WriteLine("1 - Сумма(+).\n2 - Разность(-).\n3 - Умножение(*).\n4 - Деление(/).\n5 - Возведение в степень(^).");
+
+                string selection = Console.ReadLine();
+
+                switch (selection)
+                {
+                    case "1":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Сумма равна " + Summ(number1, number2));
+                        Console.ResetColor();
+                        break;
+                    case "+":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Сумма равна " + Summ(number1, number2));
+                        Console.ResetColor();
+                        break;
+
+                    case "2":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Разность равна " + Diff(number1, number2));
+                        Console.ResetColor();
+                        break;
+                    case "-":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Разность равна " + Diff(number1, number2));
+                        Console.ResetColor();
+                        break;
+
+                    case "3":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Произведение равно " + Mult(number1, number2));
+                        Console.ResetColor();
+                        break;
+                    case "*":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Произведение равно " + Mult(number1, number2));
+                        Console.ResetColor();
+                        break;
+
+                    case "4":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Частное равно " + Div(number1, number2));
+                        Console.ResetColor();
+                        break;
+                    case "/":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Частное равно " + Div(number1, number2));
+                        Console.ResetColor();
+                        break;
+
+                    case "5":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Результат возведения в степень равен " + Degree(number1, number2));
+                        Console.ResetColor();
+                        break;
+                    case "^":
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("Результат возведения в степень равен " + Degree(number1, number2));
+                        Console.ResetColor();
+                        break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Вы ввели неккоректное действие!");
+                        Console.ResetColor();
+                        break;
+                }
+
+                string choise;
+                do
+                {
+                    Console.WriteLine("\nХотите продолжить?");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("1 - Да.");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("2 - Нет.");
+                    Console.ResetColor();
+                    choise = Console.ReadLine();
+                } while (choise != "1" && choise != "2");
+                repeat_session = false;
+                if (choise == "1") repeat_session = true;
+                if (choise == "2") repeat_session = false;
+
+            }while(repeat_session == true);
+        }
+    }
+}
