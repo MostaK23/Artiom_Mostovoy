@@ -6,26 +6,26 @@ namespace DZCourse
 {
     class Program
     {
-        public static object Check(string str)
+        public static object Check(string variableType)
         {
             object answer = "";           
-            bool try_int,try_double;
-            int num_int;
-            double num_double;
+            bool intType,doubleType;
+            int int_number;
+            double double_number;
 
             
-            try_int = int.TryParse(str,out num_int);
-            try_double = double.TryParse(str, out num_double);
+            intType = int.TryParse(variableType, out int_number);
+            doubleType = double.TryParse(variableType, out double_number);
 
 
-            if (try_int == true)
+            if (intType == true)
             { 
                 answer = "int"; 
             }
 
             else 
             {
-                if (try_double == true)
+                if (doubleType == true)
                 {
                     answer = "double";
                 }
@@ -39,29 +39,29 @@ namespace DZCourse
 
         static void Main(string[] args)
         {
-            string str;
+            string variableType;
             Console.WriteLine("Введите значение: ");
-            str = Console.ReadLine();
+            variableType = Console.ReadLine();
 
-            object answer = Check(str);
+            object answer = Check(variableType);
 
             switch (answer)
             {
                 case "int":
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(str + " is int.");
+                    Console.WriteLine(variableType + " is int.");
                     Console.ResetColor();
                     break;
 
                 case "double":
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(str + " is double.");
+                    Console.WriteLine(variableType + " is double.");
                     Console.ResetColor();
                     break;
 
                 case "string":
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(str + " is string.");
+                    Console.WriteLine(variableType + " is string.");
                     Console.ResetColor();
                     break;
             }
