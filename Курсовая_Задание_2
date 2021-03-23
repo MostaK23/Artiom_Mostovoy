@@ -103,5 +103,7 @@ int main()
 	cout << "После сортировки: " << endl;
 	ShowArray(wordArray, wordCount);
 
+	delete[] wordArray;
+
 	return 0;
 }
