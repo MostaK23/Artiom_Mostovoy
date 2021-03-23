@@ -1,0 +1,107 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <Windows.h>
+
+using namespace std;
+
+void GetText(string& text)
+{
+	cout << "Введите пердложение: " << endl;
+	getline(cin, text);
+}
+
+int GetWordCount(const string &text)
+{
+	if(text.empty())
+		return 0;
+
+	int wordCount = 1;
+
+	for (int i = 0; i < text.length(); i++)
+	{
+		if (text[i] == ' ' && text[i + 1] != ' ')
+		{
+			wordCount++;
+		}
+	}
+
+	return wordCount;
+}
+
+void FillArray(const string &text, string wordArray[], int arraySize)
+{
+	if (text.empty())
+	{
+		cout << "Текст пустой" << endl;
+		return;
+	}
+		
+	int arrayPosition = 0;
+	string word = "";
+
+	for (int i = 0; i < text.length(); i++)
+	{
+		if (text[i] != ' ' )
+		{
+			word += text[i];
+		}
+		if ((text[i] == ' ' && text[i + 1] != ' ') || (i == text.length() - 1))
+		{
+			wordArray[arrayPosition] = word;
+			arrayPosition++;
+			word = "";
+		}
+	}
+
+}
+
+void SortArray(string wordArray[], int arraySize)
+{
+	for (int i = 1; i < arraySize; i++)
+	{
+		for (int j = 0; j < arraySize - i; j++)
+		{
+			if (wordArray[j] > wordArray[j + 1])
+			{
+				swap(wordArray[j], wordArray[j + 1]);
+			}
+		}
+	}
+}
+
+void ShowArray(string wordArray[], int arraySize)
+{
+	for (int i = 0; i < arraySize; i++)
+	{
+		cout << wordArray[i] << endl;
+	}
+}
+
+int main()
+{
+	setlocale(0, ""); 
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	string text;
+	GetText(text);
+
+	int wordCount = GetWordCount(text);
+
+	string* wordArray = new string[wordCount];
+
+	cout << "Количество слов = " << wordCount << endl;
+
+	FillArray(text, wordArray, wordCount);
+
+	cout << "До сортировки: " << endl;
+	ShowArray(wordArray, wordCount);
+
+	SortArray(wordArray, wordCount);
+
+	cout << "После сортировки: " << endl;
+	ShowArray(wordArray, wordCount);
+
+	return 0;
+}
