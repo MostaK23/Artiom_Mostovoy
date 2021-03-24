@@ -1,0 +1,144 @@
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <ctime>
+
+using namespace std;
+
+void GetMatrixSize(int &width, int &heigth)
+{
+	cout << "Введите ширину матрицы: ";
+	cin >> width;
+	cout << "Введите высоту матрицы: ";
+	cin >> heigth;
+}
+
+void FillArrayAutomatic(int **matrix ,int width, int height)
+{
+	srand(time(0));
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			matrix[i][j] = -10 + rand() % 21;
+		}
+	}
+}
+
+void FillArrayByHand(int **matrix, int width, int height)
+{
+	for (int i = 0; i < width; i++)
+	{
+		cout << i + 1 << "| столбец: " << endl;
+		for (int j = 0; j < height; j++)
+		{
+			cout << "Введите " << j + 1 << " элемент: ";
+			cin >> matrix[j][i];
+		}
+	}
+}
+
+void ShowArray(int** matrix, int width, int height)
+{
+	for (int i = 0; i < width; i++)
+	{
+		for (int j = 0; j < height; j++)
+		{
+			cout << setw(3) << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+void FindMaxElement(int **matrix, int width, int height)
+{
+	for (int i = 0; i < width; i++)
+	{
+		int maxEl = matrix[0][i];
+		bool isSorted = true;
+		//Проверка на возрастание
+		for (int j = 0; j < height - 1; j++)
+		{
+			if (matrix[j][i] > matrix[j + 1][i])
+			{
+				continue;
+			}
+			else
+			{
+				isSorted = false;
+				maxEl = 0;
+				break;
+			}
+		}
+		
+		if (isSorted == false)
+		{
+			maxEl = matrix[height - 1][i];
+			bool isSorted = true;
+			//Проверка на убывание
+			for (int j = 0; j < height - 1; j++)
+			{
+				if (matrix[j][i] < matrix[j + 1][i])
+				{
+					continue;
+				}
+				else
+				{
+					isSorted = false;
+					maxEl = 0;
+					break;
+				}
+			}
+		}
+
+		cout << "Столбец|" << i + 1  << "| Макс элемент = " << maxEl << endl;
+	}
+}
+
+void ChooseFillMode(int **matrix, int width, int height)
+{
+	int choise;
+	cout << "Как вы хотите заполнить массив" << endl;
+	cout << "|1|Автоматически" << endl;
+	cout << "|2|В ручную" << endl;
+	cin >> choise;
+
+	switch (choise)
+	{
+	case 1:
+		FillArrayAutomatic(matrix, width, height);
+		break;
+	case 2:
+		FillArrayByHand(matrix, width, height);
+		break;
+	default:
+		cout << "Вы ввели недопустимое значение.";
+		break;
+	}
+}
+
+int main()
+{
+	setlocale(0, "");
+
+	int width, height;
+	GetMatrixSize(height, width);
+
+	int **matrix = new int*[width];
+	for (int i = 0; i < width; i++)
+		matrix[i] = new int[height];
+
+	ChooseFillMode(matrix, width, height);
+
+	ShowArray(matrix, width, height);
+
+	cout << endl;
+
+	FindMaxElement(matrix, width, height);
+
+	for (int i = 0; i < width; i++)
+		delete[] matrix[i];
+	delete[] matrix;
+
+	return 0;
+}
