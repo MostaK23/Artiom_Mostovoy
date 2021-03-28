@@ -1,0 +1,366 @@
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <Windows.h>
+
+using namespace std;
+
+string path = "AutoShop.txt";
+
+struct Goods
+{
+	string productName;
+	string producerCompany;
+	string pricePerUnit;
+	string count;
+	string shopNumber;
+	string minimumBatch;
+} extraGoods;
+
+void AddNewGoods(); //Добавление нового товара
+void FindRecordsByProperty(); //Поиск записи по свойству
+void EditingRecords(); //Редактирование записей
+void DeleteRecords(); //Удаление записей
+void ReportOnRequest(); //Отчёт по запросу
+void DeleteGoodsOfShop(); //Удаление товаров указанного магазина
+void ShowGoodsOfShop(); //Показать все товары указанного магазина
+void ShowAllGoods(); //Показать все товары
+int GetNumber(); //Проверка на ввод числа
+int GetNumberFromString(string str); //Конвертирование строки в число
+bool IsNumber(string str); //Проверка на число
+int GetGoodsCount();
+
+void OperationList()
+{
+	cout << "|1|Добавить новые данные" << endl;
+	cout << "|2|Поиск записей по полю" << endl;
+	cout << "|3|Редактирование записей" << endl;
+	cout << "|4|Удаление записей" << endl;
+	cout << "|5|Отчёт по запросу" << endl;
+	cout << "|6|Удалить все товары указанного магазина" << endl;
+	cout << "|7|Вывод товаров указанного магазина" << endl;
+	cout << "|8|Вывод всех товаров" << endl;
+	cout << "|0|Выход" << endl;
+}
+
+void ChooseOperation()
+{
+	bool inProcess = true;
+
+	while(inProcess)
+	{
+		OperationList();
+		int choise;
+		cout << "Ваш выбор: " << endl;
+		cin >> choise;
+
+		switch (choise)
+		{
+		case 1:
+			AddNewGoods();
+			break;
+		case 2:
+			FindRecordsByProperty();
+			break;
+		case 3:
+			EditingRecords();
+			break;
+		case 4:
+			DeleteRecords();
+			break;
+		case 5:
+			ReportOnRequest();
+			break;
+		case 6:
+			DeleteGoodsOfShop();
+			break;
+		case 7:
+			ShowGoodsOfShop();
+			break;
+		case 8:
+			ShowAllGoods();
+			break;
+		case 0:
+			inProcess = false;
+			break;
+		}
+	}
+}
+
+int main()
+{
+	setlocale(0, "");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
+	fstream file;
+	file.open(path);
+	file.close();
+
+	ChooseOperation();
+
+	cout << "До свидания" << endl;
+
+	return 0;
+}
+
+int GetNumber()
+{
+	int number;
+	while (true)
+	{
+		cin >> number;
+
+		if (cin.fail())
+		{
+			cin.clear();
+			cin.ignore(32767, '\n');
+			cout << "Введите число" << endl;
+			continue;
+		}
+
+		cin.ignore(32767, '\n');
+		if (cin.gcount() > 1)
+		{
+			cout << "Введите число" << endl;
+			continue;
+		}
+
+		return number;
+	}
+}
+
+bool IsNumber(string str)
+{
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (!isdigit(str[i]))
+		{
+			cout << "Введите число" << endl;
+			return false;
+		}
+	}
+
+	return true;
+}
+
+int GetNumberFromString(string str)
+{
+	while (true)
+	{
+		int number;
+
+		if (!IsNumber(str))
+		{
+			cout << "Введите число" << endl;
+			cin >> str;
+			continue;
+		}
+
+		stringstream strStream;
+		strStream << str;
+		strStream >> number;
+
+		if (number < 0)
+		{
+			cout << "Введите положительное число" << endl;
+			cin >> str;
+			continue;
+		}
+
+		return number;
+	}
+}
+
+void AddNewGoods()
+{
+	cout << "Сколько товаров хотите добавить ";
+	int count = GetNumber();
+
+	ofstream file;
+	file.open(path, ios::app);
+
+	if (file)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			cout << "Товар номер " << i + 1 << ":" << endl;
+
+			//Имя товара
+			if (i > 0)
+				cin.get();
+			cout << "Имя товара: ";
+			getline(cin, extraGoods.productName);
+			file << "Товар: " << extraGoods.productName << "\n";
+
+			//Производитель
+			cout << "Производитель: ";
+			getline(cin, extraGoods.producerCompany);
+			file << "Производитель: " << extraGoods.producerCompany << "\n";
+
+			//Цена
+			cout << "Цена: ";
+			do
+			{
+				cin >> extraGoods.pricePerUnit;
+			} while (!IsNumber(extraGoods.pricePerUnit));
+			file << "Цена: " << extraGoods.pricePerUnit << "\n";
+
+			//Количество
+			cout << "Количество: ";
+			do
+			{
+				cin >> extraGoods.count;
+			} while (!IsNumber(extraGoods.count));
+			file << "Количество: " << extraGoods.count << "\n";
+
+			//Номер магазина
+			cout << "Номер магазина: ";
+			cin.get();
+			getline(cin, extraGoods.shopNumber);
+			file << "Номер магазина: " << extraGoods.shopNumber << "\n";
+
+			//Минимальная партия
+			cout << "Минимальная партия: ";
+			do
+			{
+				cin >> extraGoods.minimumBatch;
+			} while (!IsNumber(extraGoods.minimumBatch));
+			file << "Минимальная партия: " << extraGoods.minimumBatch << "\n";
+			file << "\n";
+
+			system("pause");
+			system("cls");
+		}
+		
+	}
+	else
+	{
+		cout << "Не удалось открыть файл";
+	}
+
+	system("pause");
+	system("cls");
+
+	file.close();
+}
+
+void ShowAllGoods()
+{
+	ifstream file;
+	file.open(path);
+
+	if (file)
+	{
+		while (file)
+		{
+			string text;
+			getline(file, text);
+			cout << text;
+			cout << endl;
+		}
+	}
+	else
+	{
+		cout << "Не удалось открыть файл" << endl;
+	}
+
+	system("pause");
+	system("cls");
+
+	file.close();
+}
+
+void FillStruct(Goods &goods, string text, int positionInArray, int propertyNumber)
+{
+
+
+
+}
+
+int GetGoodsCount()
+{
+	string prop = "Товар: ";
+
+	ifstream file;
+	file.open(path);
+
+	int goodsCount = 0;
+
+	if (file)
+	{
+		while (file)
+		{
+			string text;
+
+			getline(file, text);
+
+			int position = 0;
+
+			for (int i = 0; i < text.length(); i++)
+			{
+				if (position == prop.length())
+				{
+					goodsCount++;
+				}
+
+				if (text[i] == prop[position])
+				{
+					position++;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		cout << "Не удалось открыть файл" << endl;
+	}
+
+	file.close();
+	return goodsCount;
+}
+
+void FindRecordsByProperty() 
+{
+	ifstream file;
+	file.open(path);
+
+	string propertyName;
+	cout << "Введите критерий по которому надо искать: ";
+	cin >> propertyName;
+
+	if (file)
+	{
+		int goodsCount = GetGoodsCount();
+
+		while (file)
+		{
+			string text;
+			getline(file, text);
+
+			
+
+		}
+		
+
+	}
+	else
+	{
+		cout << "Не удалось открыть файл" << endl;
+	}
+
+	file.close();
+}
+void EditingRecords() 
+{
+
+}
+void DeleteRecords() {}
+void ReportOnRequest() {}
+void DeleteGoodsOfShop() {}
+void ShowGoodsOfShop() {}
