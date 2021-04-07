@@ -105,7 +105,7 @@ void List<T>::insert(T data, int index) {
 	if (index == 0) {
 		push_front(data);
 	}
-	else if (index == size) {
+	else if (index == size - 1) {
 		push_back(data);
 	}
 	else {
